@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – Marine Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ocean-deep:   #0a1628;
+      --ocean-mid:    #0d2b45;
+      --ocean-teal:   #0e7c7b;
+      --ocean-bright: #17c3b2;
+      --sand:         #e8dcc8;
+      --foam:         #f0f6f6;
+      --text-light:   #b8cdd6;
+      --accent:       #17c3b2;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--ocean-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      font-family: 'DM Sans', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Animated ocean background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(14,124,123,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(13,43,69,0.8) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, #0a1628 0%, #061020 100%);
+      z-index: 0;
+    }
+
+    /* floating particles */
+    .bubble {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(23,195,178,0.08);
+      border: 1px solid rgba(23,195,178,0.15);
+      animation: rise linear infinite;
+      z-index: 0;
+    }
+    .bubble:nth-child(1)  { width:8px;  height:8px;  left:10%; animation-duration:12s; animation-delay:0s;   }
+    .bubble:nth-child(2)  { width:14px; height:14px; left:25%; animation-duration:18s; animation-delay:3s;   }
+    .bubble:nth-child(3)  { width:5px;  height:5px;  left:40%; animation-duration:10s; animation-delay:7s;   }
+    .bubble:nth-child(4)  { width:10px; height:10px; left:60%; animation-duration:15s; animation-delay:1s;   }
+    .bubble:nth-child(5)  { width:6px;  height:6px;  left:75%; animation-duration:13s; animation-delay:5s;   }
+    .bubble:nth-child(6)  { width:12px; height:12px; left:88%; animation-duration:20s; animation-delay:9s;   }
+
+    @keyframes rise {
+      0%   { transform: translateY(110vh) scale(1);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* ── Card ── */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      background: rgba(13,43,69,0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(23,195,178,0.2);
+      border-radius: 20px;
+      padding: 3rem 2.8rem;
+      box-shadow:
+        0 0 0 1px rgba(23,195,178,0.05),
+        0 40px 80px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(30px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* decorative line */
+    .card::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ocean-bright), transparent);
+      border-radius: 2px;
+      margin-bottom: 1.6rem;
+    }
+
+    .card-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ocean-bright);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--foam);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--ocean-bright);
+    }
+
+    .subtitle {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 2.2rem;
+    }
+
+    /* ── Form fields ── */
+    .field {
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.45rem;
+    }
+
+    input[type="email"],
+    textarea {
+      width: 100%;
+      background: rgba(10,22,40,0.6);
+      border: 1px solid rgba(23,195,178,0.18);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--foam);
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      resize: none;
+    }
+
+    input[type="email"]::placeholder,
+    textarea::placeholder {
+      color: rgba(184,205,214,0.35);
+    }
+
+    input[type="email"]:focus,
+    textarea:focus {
+      border-color: var(--ocean-bright);
+      background: rgba(10,22,40,0.85);
+      box-shadow: 0 0 0 3px rgba(23,195,178,0.12), 0 0 20px rgba(23,195,178,0.08);
+    }
+
+    textarea { height: 130px; }
+
+    /* ── Submit button ── */
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 0.6rem;
+      padding: 0.95rem;
+      background: linear-gradient(135deg, var(--ocean-teal) 0%, var(--ocean-bright) 100%);
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      box-shadow: 0 4px 20px rgba(23,195,178,0.3);
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(23,195,178,0.45);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0);
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ripple */
+    button[type="submit"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    button[type="submit"]:hover::after { opacity: 1; }
+
+    /* ── Status message ── */
+    #form-status {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      text-align: center;
+      min-height: 1.2em;
+      transition: opacity 0.4s;
+    }
+
+    /* ── Divider & social hint ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1.8rem 0 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(23,195,178,0.12);
+    }
+    .divider span {
+      font-size: 0.72rem;
+      color: rgba(184,205,214,0.4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- bubbles -->
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+
+  <div class="card">
+    <p class="card-label">Get in touch</p>
+    <h1>Let's <em>Connect</em></h1>
+    <p class="subtitle">Have a question about the ocean, a collaboration idea, or just want to say hello? Drop me a message below.</p>
+
+    <form id="contact-form">
+      <!-- Replace with your Web3Forms access key -->
+      <input type="hidden" name="access_key" value="Y882fce52-cb37-4045-bc2a-c4c87d2fbfe4">
+      <input type="hidden" name="subject" value="New message from your blog">
+
+      <div class="field">
+        <label for="email">Your Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          placeholder="What's on your mind?"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" id="submit-btn">Send Message</button>
+      <p id="form-status"></p>
+    </form>
+
+    <div class="divider"><span>marine science &amp; data</span></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    const btn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      status.style.color = '';
+
+      const data = Object.fromEntries(new FormData(form));
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          status.textContent = '✅ Message sent! I\'ll get back to you soon.';
+          status.style.color = '#17c3b2';
+          form.reset();
+        } else {
+          status.textContent = '❌ Something went wrong. Please try again.';
+          status.style.color = '#e07070';
+        }
+      } catch {
+        status.textContent = '❌ Network error. Please try again.';
+        status.style.color = '#e07070';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+      }
+    });
+  </script>
+</body>
+</html>
